@@ -18,20 +18,29 @@ class ResultsViewController: UIViewController {
     @IBOutlet var descriptionLabel: UILabel!
     
     var answersChoosen: [Answer]!
+    
+    private var resultAnimal: AnimalType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let resultType = Dictionary(grouping: answersChoosen, by: { $0.type })
-            .sorted(by: { $0.value.count > $1.value.count })
-            .first?.key
-        
-        if let resultType = resultType {
-            titleLabel.text = "Вы - \(resultType.rawValue)"
-            descriptionLabel.text = resultType.definition
+        findResultAnimal()
+        setupUI()
+    }
+    
+    private func setupUI() {
+        if let resultAnimal = resultAnimal {
+            titleLabel.text = "Вы - \(resultAnimal.rawValue)"
+            descriptionLabel.text = resultAnimal.definition
         }
         
         navigationItem.hidesBackButton = true
+    }
+    
+    private func findResultAnimal() {
+        resultAnimal = Dictionary(grouping: answersChoosen, by: { $0.type })
+            .sorted(by: { $0.value.count > $1.value.count })
+            .first?.key
     }
 
 }
